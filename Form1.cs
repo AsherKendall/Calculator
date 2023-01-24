@@ -17,9 +17,18 @@ namespace Calculator
             InitializeComponent();
         }
 
+        private void deleteButton_Key(object sender, KeyPressEventArgs e)
+        {
+            switch (e.KeyChar)
+            {
+                case (char)Keys.Back:
+                    deleteButton.PerformClick();
+                    break;
+            }
+        }   
         private void deleteButton_Click(object sender, EventArgs e)
         {
-
+            Console.WriteLine("Delete key pressed");
         }
 
         private void clearButton_Click(object sender, EventArgs e)
