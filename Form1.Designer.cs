@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.sqrtButton = new System.Windows.Forms.Button();
             this.squareButton = new System.Windows.Forms.Button();
             this.expoButton = new System.Windows.Forms.Button();
@@ -48,22 +47,13 @@
             this.fiveButton = new System.Windows.Forms.Button();
             this.sixButton = new System.Windows.Forms.Button();
             this.oneButton = new System.Windows.Forms.Button();
-            this.secondButton = new System.Windows.Forms.Button();
+            this.twoButton = new System.Windows.Forms.Button();
             this.threeButton = new System.Windows.Forms.Button();
             this.zeroButton = new System.Windows.Forms.Button();
             this.decimalButton = new System.Windows.Forms.Button();
             this.symbChangeButton = new System.Windows.Forms.Button();
+            this.textBox = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(12, 12);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.richTextBox1.Size = new System.Drawing.Size(218, 42);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "0";
             // 
             // sqrtButton
             // 
@@ -205,9 +195,10 @@
             this.equalButton.Location = new System.Drawing.Point(180, 340);
             this.equalButton.Name = "equalButton";
             this.equalButton.Size = new System.Drawing.Size(50, 50);
-            this.equalButton.TabIndex = 15;
+            this.equalButton.TabIndex = 1;
             this.equalButton.Text = "=";
             this.equalButton.UseVisualStyleBackColor = true;
+            this.equalButton.Click += new System.EventHandler(this.equalButton_Click);
             // 
             // fourButton
             // 
@@ -245,14 +236,14 @@
             this.oneButton.Text = "1";
             this.oneButton.UseVisualStyleBackColor = true;
             // 
-            // secondButton
+            // twoButton
             // 
-            this.secondButton.Location = new System.Drawing.Point(68, 284);
-            this.secondButton.Name = "secondButton";
-            this.secondButton.Size = new System.Drawing.Size(50, 50);
-            this.secondButton.TabIndex = 20;
-            this.secondButton.Text = "2";
-            this.secondButton.UseVisualStyleBackColor = true;
+            this.twoButton.Location = new System.Drawing.Point(68, 284);
+            this.twoButton.Name = "twoButton";
+            this.twoButton.Size = new System.Drawing.Size(50, 50);
+            this.twoButton.TabIndex = 20;
+            this.twoButton.Text = "2";
+            this.twoButton.UseVisualStyleBackColor = true;
             // 
             // threeButton
             // 
@@ -291,8 +282,21 @@
             this.symbChangeButton.Text = "+/-";
             this.symbChangeButton.UseVisualStyleBackColor = true;
             // 
+            // textBox
+            // 
+            this.textBox.EnableAutoDragDrop = true;
+            this.textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox.Location = new System.Drawing.Point(12, 12);
+            this.textBox.Name = "textBox";
+            this.textBox.ReadOnly = true;
+            this.textBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.textBox.Size = new System.Drawing.Size(218, 42);
+            this.textBox.TabIndex = 0;
+            this.textBox.Text = "0";
+            // 
             // Form1
             // 
+            this.AcceptButton = this.equalButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(242, 409);
@@ -300,7 +304,7 @@
             this.Controls.Add(this.decimalButton);
             this.Controls.Add(this.zeroButton);
             this.Controls.Add(this.threeButton);
-            this.Controls.Add(this.secondButton);
+            this.Controls.Add(this.twoButton);
             this.Controls.Add(this.oneButton);
             this.Controls.Add(this.sixButton);
             this.Controls.Add(this.fiveButton);
@@ -320,16 +324,16 @@
             this.Controls.Add(this.expoButton);
             this.Controls.Add(this.squareButton);
             this.Controls.Add(this.sqrtButton);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.textBox);
+            this.KeyPreview = true;
             this.Name = "Form1";
             this.Text = "Calculator";
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress_1);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button sqrtButton;
         private System.Windows.Forms.Button squareButton;
         private System.Windows.Forms.Button expoButton;
@@ -349,11 +353,12 @@
         private System.Windows.Forms.Button fiveButton;
         private System.Windows.Forms.Button sixButton;
         private System.Windows.Forms.Button oneButton;
-        private System.Windows.Forms.Button secondButton;
+        private System.Windows.Forms.Button twoButton;
         private System.Windows.Forms.Button threeButton;
         private System.Windows.Forms.Button zeroButton;
         private System.Windows.Forms.Button decimalButton;
         private System.Windows.Forms.Button symbChangeButton;
+        private System.Windows.Forms.RichTextBox textBox;
     }
 }
 
