@@ -19,7 +19,7 @@ namespace Calculator
         char op = ' ';
         double answer = 0;
 
-
+        #region functions
         public calc()
         {
             InitializeComponent();
@@ -106,8 +106,7 @@ namespace Calculator
             UpdateText();
         }
 
-
-
+        #endregion
 
         #region keypresses
         private void Form1_KeyPress_1(object sender, KeyPressEventArgs e)
