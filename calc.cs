@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,8 +17,7 @@ namespace Calculator
         string num1 = string.Empty;
         string num2 = string.Empty ;
         char op = ' ';
-        double answser = 0;
-
+        double answer = 0;
 
 
         public calc()
@@ -25,22 +25,22 @@ namespace Calculator
             InitializeComponent();
         }
 
-        public void UpdateText() //Check if we need to update textbox
+        private void UpdateText() //Check if we need to update textbox
         {
             if(String.IsNullOrEmpty(num1))
             {
-                textBox.Text = answser.ToString();
+                textBox.Text = answer.ToString();
             }
             else if(op == ' ')
             {
                 textBox.Text = num1.ToString();
             }else if (String.IsNullOrEmpty(num2))
             {
-                textBox.Text = '0' + ' ' + op + ' ' + num2.ToString();
+                textBox.Text = num1 + " " + op.ToString() + " " + '0';
             }
             else
             {
-                textBox.Text = num2.ToString() + ' ' + op + ' ' + num1.ToString();
+                textBox.Text = num1 + " " + op + " " + num2;
             }
             
             return;
@@ -66,27 +66,33 @@ namespace Calculator
                 op = input;
             }else
             {
-                PerformOperation(Convert.ToDouble(num1), Convert.ToDouble(num2), op);
+                PerformOperation();
             }
             UpdateText();
         }
 
-        private void PerformOperation(double num1,double num2,char op)
+        public void PerformOperation()
         {
+            double num3 = Convert.ToDouble(num1);
+            double num4 = Convert.ToDouble(num2);
             switch (op)
             {
-                case 'x':
-                    return;
+                case '*':
+                    answer = num3 * num4; break;
                 case '+':
-                    return;
+                    answer = num3 + num4; break;
                 case '-':
-                    return;
+                    answer=  num3 - num4; break;
                 case '/':
-                    return;
+                    answer = num3 / num4; break;
                 case '^':
-                    return; 
-                default: return;
+                    answer = Math.Pow(num3, num4); break;
             }
+            op = ' ';
+            num1 = Convert.ToString(answer);
+            num2 = string.Empty;
+            answer = 0;
+            UpdateText();
         }
 
         public void ClearCalc()
@@ -95,17 +101,18 @@ namespace Calculator
             num1 = string.Empty;
             num2 = string.Empty;
             op = ' ';
-            answser = 0;
+            answer = 0;
             textBox.Text = "0";
             UpdateText();
         }
 
-       
 
 
 
+        #region keypresses
         private void Form1_KeyPress_1(object sender, KeyPressEventArgs e)
         {
+            e.Handled= true;
             switch (e.KeyChar) //Switch case for keyboard input
             {
                 case (char)Keys.Back:
@@ -150,10 +157,26 @@ namespace Calculator
                 case (char)Keys.Decimal:
                     decimalButton.PerformClick();
                     break;
+                case '/':
+                    slashButton.PerformClick();
+                    break;
+                case '+':
+                    addButton.PerformClick();
+                    break;
+                case '*':
+                    multiButton.PerformClick();
+                    break;
+                case '-':
+                    minusButton.PerformClick();
+                    break;
+                case '.':
+                    decimalButton.PerformClick();
+                    break;
 
 
             }
         }
+        #endregion
 
         #region NumClicks
         private void zeroButton_Click(object sender, EventArgs e)
@@ -205,6 +228,43 @@ namespace Calculator
         {
             EnterNumber("9");
         }
+        private void decimalButton_Click(object sender, EventArgs e)
+        {
+            EnterNumber(".");
+        }
+
+        private void symbChangeButton_Click(object sender, EventArgs e)
+        {
+            if (num2 != string.Empty && num2 != "0")
+            {
+                if (num2.Substring(0, 1) == "-")
+                {
+                    num2.Remove(0, 1);
+                }
+                else
+                {
+                    num2 = '-' + num2;
+                }
+            }
+            else if (op != ' ') //Check if we are trying to negate operator
+            {
+                return;
+            }
+            else if (num1 != string.Empty)
+            {
+                if (num1.Substring(0, 1) == "-" && num1 != "0") //Checks if already negative
+                {
+                    num1.Remove(0, 1);
+                }
+                else
+                {
+                    num1 = "-"+ num1;
+                }
+            }
+
+            UpdateText();
+        }
+
         #endregion
 
         #region OtherClicks
@@ -212,15 +272,20 @@ namespace Calculator
         {
             if(num1 == String.Empty) //Checks if strings is empty
             {
+                UpdateText();
                 return;
+            }
+            else if (num2 != String.Empty) //Checks if num2 was started
+            {
+                num2 = num2.Remove(num2.Length - 1);
             }
             else if (op == ' ') //Checks if which num we are on
             {
                 num1 = num1.Remove(num1.Length-1);
             }
-            else
+            else //Delete Operator
             {
-                num2 = num2.Remove(num2.Length-1);
+                op = ' ';
             }
             UpdateText();
         }
@@ -232,14 +297,35 @@ namespace Calculator
 
         private void equalButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Equal Pressed");
+            if(op != ' ')
+            {
+                PerformOperation();
+            }
         }
-
-        #endregion
 
         private void slashButton_Click(object sender, EventArgs e)
         {
             EnterOperation('/');
         }
+
+        private void addButton_Click(object sender, EventArgs e)
+        {
+            EnterOperation('+');
+        }
+
+        private void minusButton_Click(object sender, EventArgs e)
+        {
+            EnterOperation('-');
+        }
+
+        private void multiButton_Click(object sender, EventArgs e)
+        {
+            EnterOperation('*');
+        }
+
+
+        #endregion
+
+        
     }
 }
