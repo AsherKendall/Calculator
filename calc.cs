@@ -13,7 +13,6 @@ namespace Calculator
 {
     public partial class calc : Form
     {
-        string input = string.Empty;
         string num1 = string.Empty;
         string num2 = string.Empty ;
         char op = ' ';
