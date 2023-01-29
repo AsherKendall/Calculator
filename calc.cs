@@ -17,6 +17,8 @@ namespace Calculator
         string num2 = string.Empty ;
         char op = ' ';
         double answer = 0;
+        List<string> history = new List<string>();
+        List<double> totals = new List<double>();
 
         #region functions
         public calc()
@@ -35,7 +37,7 @@ namespace Calculator
                 textBox.Text = num1.ToString();
             }else if (String.IsNullOrEmpty(num2))
             {
-                textBox.Text = num1 + " " + op.ToString() + " " + '0';
+                textBox.Text = num1 + " " + op.ToString() + " ";
             }
             else
             {
@@ -72,21 +74,29 @@ namespace Calculator
 
         public void PerformOperation()
         {
-            double num3 = Convert.ToDouble(num1);
-            double num4 = Convert.ToDouble(num2);
-            switch (op)
+
+            if (num1.All(char.IsDigit) && num2.All(char.IsDigit)) //If normal operation
             {
-                case '*':
-                    answer = num3 * num4; break;
-                case '+':
-                    answer = num3 + num4; break;
-                case '-':
-                    answer=  num3 - num4; break;
-                case '/':
-                    answer = num3 / num4; break;
-                case '^':
-                    answer = Math.Pow(num3, num4); break;
+                double num3 = Convert.ToDouble(num1);
+                double num4 = Convert.ToDouble(num2);
+                switch (op)
+                {
+                    case '*':
+                        answer = num3 * num4; break;
+                    case '+':
+                        answer = num3 + num4; break;
+                    case '-':
+                        answer = num3 - num4; break;
+                    case '/':
+                        answer = num3 / num4; break;
+                    case '^':
+                        answer = Math.Pow(num3, num4); break;
+                }
             }
+            
+            history.Add(textBox.Text);
+            totals.Add(answer);
+            HistoryBox.Items.Add(history.Last() + " = " + totals.Last());
             op = ' ';
             num1 = Convert.ToString(answer);
             num2 = string.Empty;
@@ -96,12 +106,14 @@ namespace Calculator
 
         public void ClearCalc()
         {
-            input = string.Empty;
             num1 = string.Empty;
             num2 = string.Empty;
             op = ' ';
             answer = 0;
             textBox.Text = "0";
+            history.Clear(); //Clears History
+            totals.Clear(); //Clears totals
+            HistoryBox.Items.Clear(); //Clears history text
             UpdateText();
         }
 
@@ -277,7 +289,7 @@ namespace Calculator
             {
                 num2 = num2.Remove(num2.Length - 1);
             }
-            else if (op == ' ') //Checks if which num we are on
+            else if (op == ' ') //Checks which num we are on
             {
                 num1 = num1.Remove(num1.Length-1);
             }
@@ -293,9 +305,30 @@ namespace Calculator
             ClearCalc(); //Clear calculator
         }
 
+        private void ClearEntry_Click(object sender, EventArgs e)
+        {
+            if (num1 == String.Empty) //Checks if strings is empty
+            {
+                return;
+            }
+            else if (num2 != String.Empty) //Checks if num2 was started
+            {
+                num2 = string.Empty;
+            }
+            else if (op == ' ') //Checks which num we are on
+            {
+                num1 = string.Empty;
+            }
+            else //Delete Operator
+            {
+                op = ' ';
+            }
+            UpdateText();
+        }
+
         private void equalButton_Click(object sender, EventArgs e)
         {
-            if(op != ' ')
+            if(op != ' ' && String.IsNullOrEmpty(num2) == false)
             {
                 PerformOperation();
             }
@@ -321,9 +354,33 @@ namespace Calculator
             EnterOperation('*');
         }
 
+        private void sqrtButton_Click(object sender, EventArgs e) //Done in function so we don't have to mess with strings
+        {
+            if(op == ' ')
+            {
+                answer = Math.Sqrt(Convert.ToDouble(num1));
+                history.Add("Sqrt(" + answer +")");
+                totals.Add(answer);
+                num1 = Convert.ToString(answer);
+            }else if(String.IsNullOrEmpty(num2))
+            {
+
+            }
+            else
+            {
+
+            }
+
+            HistoryBox.Items.Add(history.Last() + " = " + totals.Last());
+            op = ' ';
+            num1 = Convert.ToString(answer);
+            num2 = string.Empty;
+            answer = 0;
+            UpdateText();
+        }
 
         #endregion
 
-        
+
     }
 }
