@@ -31,6 +31,7 @@ namespace Calculator
             if(String.IsNullOrEmpty(num1))
             {
                 textBox.Text = answer.ToString();
+                answer = 0;
             }
             else if(op == ' ')
             {
@@ -75,31 +76,35 @@ namespace Calculator
         public void PerformOperation()
         {
 
-            if (num1.All(char.IsDigit) && num2.All(char.IsDigit)) //If normal operation
+            double num3 = Convert.ToDouble(num1);
+            double num4 = Convert.ToDouble(num2);
+            switch (op)
             {
-                double num3 = Convert.ToDouble(num1);
-                double num4 = Convert.ToDouble(num2);
-                switch (op)
-                {
-                    case '*':
-                        answer = num3 * num4; break;
-                    case '+':
-                        answer = num3 + num4; break;
-                    case '-':
-                        answer = num3 - num4; break;
-                    case '/':
-                        answer = num3 / num4; break;
-                    case '^':
-                        answer = Math.Pow(num3, num4); break;
-                }
+                case '*':
+                    answer = num3 * num4; break;
+                case '+':
+                    answer = num3 + num4; break;
+                case '-':
+                    answer = num3 - num4; break;
+                case '/':
+                    answer = num3 / num4; break;
+                case '^':
+                    answer = Math.Pow(num3, num4); break;
             }
-            
             history.Add(textBox.Text);
             totals.Add(answer);
             HistoryBox.Items.Add(history.Last() + " = " + totals.Last());
             op = ' ';
-            num1 = Convert.ToString(answer);
-            num2 = string.Empty;
+            if(answer != 0)
+            {
+                num1 = Convert.ToString(answer);
+                num2 = string.Empty;
+            }
+            else
+            {
+                num1 = string.Empty;
+                num2 = string.Empty;
+            }
             answer = 0;
             UpdateText();
         }
@@ -181,6 +186,9 @@ namespace Calculator
                     break;
                 case '.':
                     decimalButton.PerformClick();
+                    break;
+                case '^':
+                    expoButton.PerformClick();
                     break;
 
 
@@ -359,24 +367,69 @@ namespace Calculator
             if(op == ' ')
             {
                 answer = Math.Sqrt(Convert.ToDouble(num1));
-                history.Add("Sqrt(" + answer +")");
+                history.Add("Sqrt(" + num1 +")");
                 totals.Add(answer);
                 num1 = Convert.ToString(answer);
-            }else if(String.IsNullOrEmpty(num2))
+                UpdateText();
+            }
+            else if(String.IsNullOrEmpty(num2) == false)
             {
-
+                textBox.Text = num1 + " " + op + "sqrt(" + num2 + ")";
+                num2 = Convert.ToString(Math.Sqrt(Convert.ToDouble(num2)));
+                PerformOperation();
             }
             else
             {
-
+                return;
             }
+        }
+        private void squareButton_Click(object sender, EventArgs e)
+        {
+            if (op == ' ')
+            {
+                answer = Math.Pow(Convert.ToDouble(num1), 2);
+                history.Add("(" + num1 + ")^2");
+                totals.Add(answer);
+                num1 = Convert.ToString(answer);
+                UpdateText();
+            }
+            else if (String.IsNullOrEmpty(num2) == false)
+            {
+                textBox.Text = num1 + " " + op + "(" + num2 + ")^2";
+                num2 = Convert.ToString(Math.Pow(Convert.ToDouble(num2), 2));
+                PerformOperation();
+            }
+            else
+            {
+                return;
+            }
+        }
 
-            HistoryBox.Items.Add(history.Last() + " = " + totals.Last());
-            op = ' ';
-            num1 = Convert.ToString(answer);
-            num2 = string.Empty;
-            answer = 0;
-            UpdateText();
+        private void expoButton_Click(object sender, EventArgs e)
+        {
+            EnterOperation('^');
+        }
+
+        private void fractionButton_Click(object sender, EventArgs e)
+        {
+            if (op == ' ')
+            {
+                answer = 1.0 / Convert.ToDouble(num1);
+                history.Add("1/" + num1);
+                totals.Add(answer);
+                num1 = Convert.ToString(answer);
+                UpdateText();
+            }
+            else if (String.IsNullOrEmpty(num2) == false)
+            {
+                textBox.Text = num1 + " " + op + "(1/" + num2 + ")";
+                num2 = Convert.ToString( 1.0 / Convert.ToDouble(num2));
+                PerformOperation();
+            }
+            else
+            {
+                return;
+            }
         }
 
         #endregion
