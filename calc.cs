@@ -44,12 +44,17 @@ namespace Calculator
             {
                 textBox.Text = num1 + " " + op + " " + num2;
             }
-            
+
+            textBox.Select(textBox.Text.Length, 0); //Seems to be glitchy
             return;
         }
 
         public void EnterNumber(string input)
         {
+            //if(num1.Length + num2.Length >=8)
+            //{
+            //    return;
+            //}
             if(op == ' ')
             {
                 num1 = num1 + input;
@@ -59,6 +64,7 @@ namespace Calculator
                 num2 = num2 + input;
             }
             UpdateText();
+            
         }
 
         public void EnterOperation(char input)
@@ -66,9 +72,15 @@ namespace Calculator
             if(op == ' ')
             {
                 op = input;
-            }else
+            }
+            else if(num2 != string.Empty)
             {
                 PerformOperation();
+                op = input;
+            }
+            else
+            {
+                return;
             }
             UpdateText();
         }
@@ -91,6 +103,7 @@ namespace Calculator
                 case '^':
                     answer = Math.Pow(num3, num4); break;
             }
+            Math.Round(answer);
             history.Add(textBox.Text);
             totals.Add(answer);
             HistoryBox.Items.Add(history.Last() + " = " + totals.Last());
@@ -158,16 +171,16 @@ namespace Calculator
                     fiveButton.PerformClick();
                     break;
                 case (char)Keys.D6:
-                    fiveButton.PerformClick();
+                    sixButton.PerformClick();
                     break;
                 case (char)Keys.D7:
-                    fiveButton.PerformClick();
+                    sevenButton.PerformClick();
                     break;  
                 case (char)Keys.D8:
-                    fiveButton.PerformClick();
+                    eightButton.PerformClick();
                     break;
                 case (char)Keys.D9:
-                    fiveButton.PerformClick();
+                    nineButton.PerformClick();
                     break;
                 case (char)Keys.Decimal:
                     decimalButton.PerformClick();
@@ -373,6 +386,7 @@ namespace Calculator
                 history.Add("Sqrt(" + num1 +")");
                 totals.Add(answer);
                 num1 = Convert.ToString(answer);
+                HistoryBox.Items.Add(history.Last() + " = " + totals.Last());
                 UpdateText();
             }
             else if(String.IsNullOrEmpty(num2) == false)
@@ -385,6 +399,7 @@ namespace Calculator
             {
                 return;
             }
+            answer = 0;
         }
         private void squareButton_Click(object sender, EventArgs e)
         {
@@ -394,6 +409,7 @@ namespace Calculator
                 history.Add("(" + num1 + ")^2");
                 totals.Add(answer);
                 num1 = Convert.ToString(answer);
+                HistoryBox.Items.Add(history.Last() + " = " + totals.Last());
                 UpdateText();
             }
             else if (String.IsNullOrEmpty(num2) == false)
@@ -406,6 +422,7 @@ namespace Calculator
             {
                 return;
             }
+            answer = 0;
         }
 
         private void expoButton_Click(object sender, EventArgs e)
@@ -421,6 +438,7 @@ namespace Calculator
                 history.Add("1/" + num1);
                 totals.Add(answer);
                 num1 = Convert.ToString(answer);
+                HistoryBox.Items.Add(history.Last() + " = " + totals.Last());
                 UpdateText();
             }
             else if (String.IsNullOrEmpty(num2) == false)
@@ -433,10 +451,10 @@ namespace Calculator
             {
                 return;
             }
+            answer = 0;
         }
 
+
         #endregion
-
-
     }
 }
