@@ -46,12 +46,13 @@ namespace Calculator
             }
 
             textBox.Select(textBox.Text.Length, 0); //Seems to be glitchy
+            equalButton.Focus();
             return;
         }
 
         public void EnterNumber(string input)
         {
-            //if(num1.Length + num2.Length >=8)
+            //if(num1.Length + num2.Length >=8) //Would be used to limit input
             //{
             //    return;
             //}
@@ -269,11 +270,11 @@ namespace Calculator
 
         private void symbChangeButton_Click(object sender, EventArgs e)
         {
-            if (num2 != string.Empty && num2 != "0")
+            if (num2 != string.Empty && num2 != string.Empty && num2 != "0")
             {
                 if (num2.Substring(0, 1) == "-")
                 {
-                    num2.Remove(0, 1);
+                    num2 = num2.Remove(0, 1);
                 }
                 else
                 {
@@ -288,7 +289,7 @@ namespace Calculator
             {
                 if (num1.Substring(0, 1) == "-" && num1 != "0") //Checks if already negative
                 {
-                    num1.Remove(0, 1);
+                    num1 = num1.Remove(0, 1);
                 }
                 else
                 {
