@@ -190,6 +190,9 @@ namespace Calculator
                 case '^':
                     expoButton.PerformClick();
                     break;
+                case 'c':
+                    clearButton.PerformClick();
+                    break;
 
 
             }
