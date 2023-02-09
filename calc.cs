@@ -46,7 +46,7 @@ namespace Calculator
             }
 
             textBox.Select(textBox.Text.Length, 1); //Seems to be glitchy
-            equalButton.Focus();
+            equalButton.Focus(); //This is supposed to go the end of the text in textbox
             return;
         }
 
@@ -70,6 +70,7 @@ namespace Calculator
 
         public void EnterOperation(char input)
         {
+            //If first number is empty replace with 0
             if(op == ' ' && num1 == string.Empty)
             {
                 num1 = "0";
@@ -113,7 +114,19 @@ namespace Calculator
                 case '-':
                     answer = num3 - num4; break;
                 case '/':
-                    answer = num3 / num4; break;
+                    if(num4 != 0)
+                    {
+                        answer = num3 / num4;
+                    }
+                    else
+                    {
+                        textBox.Text = string.Empty;
+                        Math.Round(answer);
+                        HistoryBox.Items.Add(num1 + op + num2 + " = " + "Error");
+                        op = ' ';
+                        return;
+                    }
+                    break;
                 case '^':
                     answer = Math.Pow(num3, num4); break;
             }
