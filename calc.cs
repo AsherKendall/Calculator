@@ -45,7 +45,7 @@ namespace Calculator
                 textBox.Text = num1 + " " + op + " " + num2;
             }
 
-            textBox.Select(textBox.Text.Length, 0); //Seems to be glitchy
+            textBox.Select(textBox.Text.Length, 1); //Seems to be glitchy
             equalButton.Focus();
             return;
         }
@@ -70,7 +70,12 @@ namespace Calculator
 
         public void EnterOperation(char input)
         {
-            if(op == ' ')
+            if(op == ' ' && num1 == string.Empty)
+            {
+                num1 = "0";
+                op = input;
+            }
+            else if(op == ' ')
             {
                 op = input;
             }
@@ -88,9 +93,17 @@ namespace Calculator
 
         public void PerformOperation()
         {
-
-            double num3 = Convert.ToDouble(num1);
-            double num4 = Convert.ToDouble(num2);
+            double num3 = 0.0, num4 = 0.0;
+            if(num1!= string.Empty) 
+            {
+                num3 = Convert.ToDouble(num1);
+            }
+            if(num2!= string.Empty)
+            {
+                num4 = Convert.ToDouble(num2);
+            }
+            
+            
             switch (op)
             {
                 case '*':
@@ -116,8 +129,8 @@ namespace Calculator
             }
             else
             {
-                num1 = string.Empty;
-                num2 = string.Empty;
+                num1 = "0";
+                num2 = "0";
             }
             answer = 0;
             UpdateText();
@@ -307,6 +320,7 @@ namespace Calculator
         {
             if(num1 == String.Empty) //Checks if strings is empty
             {
+                num1= "0";
                 UpdateText();
                 return;
             }
